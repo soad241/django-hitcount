@@ -153,7 +153,7 @@ class GetHitCountJavascript(template.Node):
             obj, created = HitCount.objects.get_or_create(
                 content_type=ctype, 
                 object_pk=object_pk)
-        except HitCount.MultipleObjectsReturned:
+        except:
             return ""            
 
         js =    "$.post( '" + reverse('hitcount_update_ajax') + "',"   + \

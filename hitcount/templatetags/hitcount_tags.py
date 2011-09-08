@@ -149,9 +149,12 @@ class GetHitCountJavascript(template.Node):
 
     def render(self, context):
         ctype, object_pk = get_target_ctype_pk(context, self.object_expr)
-        
-        obj, created = HitCount.objects.get_or_create(content_type=ctype, 
-                        object_pk=object_pk)
+        try:
+            obj, created = HitCount.objects.get_or_create(
+                content_type=ctype, 
+                object_pk=object_pk)
+        except HitCount.MultipleObjectsReturned:
+            return ""            
 
         js =    "$.post( '" + reverse('hitcount_update_ajax') + "',"   + \
                 "\n\t{ hitcount_pk : '" + str(obj.pk) + "' },\n"         + \
